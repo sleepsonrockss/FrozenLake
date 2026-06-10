@@ -13,11 +13,12 @@ learning_rate = 0.9 # alpha
 discount_factor = 0.9 # gamma
 epsilon = 0.9 # random actions
 epsilon_decay_rate = 0.001
-n_episodes = 1000
+n_episodes = 10
 
 # Monte Carlo
 for i in range(n_episodes):
 
+    print(f'Episode {i+1}')
     terminated, truncated = False, False
     states, rewards, actions = [], [], []
     state, info = env.reset()
@@ -40,13 +41,15 @@ for i in range(n_episodes):
         state = next_state
     
     T = len(states)
+    print(f'Length of Episode {i+1}: {T}')
     returns = []
 
-    for i in range(T):
+    for j in range(T):
         G_t = 0
-        for j in range(i,T):
-            G_t += (discount_factor ** (j - i)) * rewards[j]
+        for k in range(j,T):
+            G_t += (discount_factor ** (k - j)) * rewards[k]
         returns.append(G_t)
+        print(f'Return for Step {j+1} which is in state {states[j]} is {G_t}')
     
     # Updating the q_values for use in the next episode
     for t in range(T):
@@ -58,12 +61,12 @@ for i in range(n_episodes):
     epsilon = max(0.1, epsilon - epsilon_decay_rate)
 
 
-f = open('frozen_lake4x4.pk1', 'wb')
-pickle.dump(q_table,f) # Saving the Q_Table
-f.close()
+# f = open('frozen_lake4x4.pk1', 'wb')
+# pickle.dump(q_table,f) # Saving the Q_Table
+# f.close()
 
 
-# view the returns list normally
-with open('frozen_lake4x4.pk1', 'rb') as f:
-    loaded_q_table = pickle.load(f)
-print(loaded_q_table)
+# # view the returns list normally
+# with open('frozen_lake4x4.pk1', 'rb') as f:
+#     loaded_q_table = pickle.load(f)
+# print(loaded_q_table)

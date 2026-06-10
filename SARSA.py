@@ -33,8 +33,8 @@ for i in range(n_episodes):
         # Choose the NEXT action using the exact same epsilon-greedy policy
         if (np.random.random() < epsilon): # Exploaratory action 90% of the time
             new_action = env.action_space.sample()
-        else:
-            new_action = np.argmax(q_table[new_state])
+        # else:
+        #     new_action = np.argmax(q_table[new_state])
         
         # Q - Learning
         # if terminated == True:
